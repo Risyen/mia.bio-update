@@ -1,0 +1,31 @@
+{
+  "name": "mia.bio-update",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Risyen/mia.bio-update.git"
+  },
+  "keywords": [],
+  "author": "kagura",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Risyen/mia.bio-update/issues"
+  },
+  "homepage": "https://github.com/Risyen/mia.bio-update#readme",
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-config-kagura": "^1.0.3"
+  },
+  "dependencies": {
+    "ansi-escapes": "^4.3.1",
+    "chalk": "^4.1.0",
+    "fs-extra": "^9.0.1",
+    "git-clone": "^0.1.0",
+    "ora": "^5.2.0"
+  }
+}
