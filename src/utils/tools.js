@@ -62,7 +62,8 @@ const collect = (currentPath) => {
         source: filePath,
       })
     } else {
-      // outputs.push(...collect(filePath))
+      collect(filePath)
+      // outputs.push(...)
     }
   }
   return outputs
@@ -77,8 +78,8 @@ const upgradeFiles = async (tempDir, userDir) => {
       const reletivePath = item.name
       const userFilePath = path.join(userDir, reletivePath)
       // console.log(userFilePath)
-      await fs.ensureFile(uploadFilePath)
-      await fs.copyFile(item.source, uploadFilePath)
+      await fs.ensureFile(userFilePath)
+      await fs.copyFile(item.source, userFilePath)
     })
   )
 
@@ -94,6 +95,7 @@ const upgradeFiles = async (tempDir, userDir) => {
   await fs.writeJSON(path.join(userDir, 'package.json'), lastVersionPkg, {
     spaces: 2,
   })
+  spinner.succeed()
 }
 
 module.exports = {
