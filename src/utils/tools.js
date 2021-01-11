@@ -69,11 +69,36 @@ const collect = (currentPath) => {
 }
 
 const upgradeFiles = async (tempDir, userDir) => {
-  
+  const files = collect(tempDir)
+  await Promise.all(
+    files.map(async (item) => {
+      if (item.name.endsWith('md') || item.name.endsWith('mdx')) return
+      //  remove md mdx
+      const reletivePath = item.name
+      const userFilePath = path.join(userDir, reletivePath)
+      // console.log(userFilePath)
+      await fs.ensureFile(uploadFilePath)
+      await fs.copyFile(item.source, uploadFilePath)
+    })
+  )
+
+  const pkgJson = await fs.readJSON(path.join(tempDir, 'package.json'))
+  const userPkgJson = await fs.readJSON(path.join(userDir, 'package.json'))
+  const lastVersionPkg = {
+    ...userPkgJson,
+    dependencies: pkgJson.dependencies,
+    devDependencies: pkgJson.devDependencies,
+    scripts: pkgJson.scripts,
+  }
+  console.log(lastVersionPkg)
+  await fs.writeJSON(path.join(userDir, 'package.json'), lastVersionPkg, {
+    spaces: 2,
+  })
 }
 
-;(async () => {
-  const subPath = path.join(__dirname, '../../')
-  // console.log(subPath)
-  collect(subPath)
-})()
+module.exports = {
+  getTmpBlog,
+  getUserDir,
+  donwLastVersionTemplate,
+  upgradeFiles,
+}
