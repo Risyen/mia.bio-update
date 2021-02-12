@@ -46,7 +46,7 @@ const downLastVersionTemplate = async (target) => {
 
 const hash = (buf) => createHash('sha1').update(buf).digest('hex')
 
-const ignores = ['node_modules', '.git', 'public']
+const ignores = ['node_modules', '.git', 'public', 'scripts']
 
 const collect = (currentPath) => {
   const files = fs.readdirSync(currentPath)
