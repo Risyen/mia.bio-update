@@ -13,6 +13,8 @@ const getTmpBlog = async () => {
   return dir
 }
 
+// get current Blog Path
+
 const getUserDir = async () => {
   const dir = process.cwd()
   const config = await fs.pathExists(path.join(dir, 'blog.config.js'))
@@ -23,9 +25,11 @@ const getUserDir = async () => {
   return dir
 }
 
-const donwLastVersionTemplate = async (target) => {
+// download Lastest Version Blog
+
+const downLastVersionTemplate = async (target) => {
   spinner.start('Installing the latest version....waiting ')
-  return new Promise((reslove, reject) => {
+  return new Promise((resolve, reject) => {
     gitClone(
       'https://github.com/Risyen/Mia.bio',
       target,
@@ -42,17 +46,15 @@ const donwLastVersionTemplate = async (target) => {
 
 const hash = (buf) => createHash('sha1').update(buf).digest('hex')
 
-const ignores = ['node_modules', '.git']
+const ignores = ['node_modules', '.git', 'public']
 
 const collect = (currentPath) => {
   const files = fs.readdirSync(currentPath)
   const outputs = []
-
   for (const name of files) {
     const filePath = path.join(currentPath, name)
     if (ignores.includes(name)) continue
     const stat = fs.statSync(filePath)
-
     if (!stat.isDirectory()) {
       const data = fs.readFileSync(filePath)
       outputs.push({
@@ -62,12 +64,14 @@ const collect = (currentPath) => {
         source: filePath,
       })
     } else {
-      collect(filePath)
-      // outputs.push(...)
+      // ...
+      outputs.push(...collect(filePath))
     }
   }
   return outputs
 }
+
+const igonreUpdateFiles = ['blog.config.js', 'LICENSE', 'favicon.ico']
 
 const upgradeFiles = async (tempDir, userDir) => {
   const files = collect(tempDir)
@@ -75,9 +79,13 @@ const upgradeFiles = async (tempDir, userDir) => {
     files.map(async (item) => {
       if (item.name.endsWith('md') || item.name.endsWith('mdx')) return
       //  remove md mdx
-      const reletivePath = item.name
+      const shouldIgnore = igonreUpdateFiles.find((name) =>
+        item.name.includes(name)
+      )
+      if (shouldIgnore) return
+      // const reletivePath = item.name
+      const reletivePath = item.source.replace(tempDir, '')
       const userFilePath = path.join(userDir, reletivePath)
-      // console.log(userFilePath)
       await fs.ensureFile(userFilePath)
       await fs.copyFile(item.source, userFilePath)
     })
@@ -101,6 +109,6 @@ const upgradeFiles = async (tempDir, userDir) => {
 module.exports = {
   getTmpBlog,
   getUserDir,
-  donwLastVersionTemplate,
+  downLastVersionTemplate,
   upgradeFiles,
 }

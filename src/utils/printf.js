@@ -18,7 +18,7 @@ const prompText = (text) => {
 
 const welcome = () => {
   const name = chalk.hex('#FEFEFE').bold('blog')
-  const text = chalk.hex('#32CD32')(`  Welcome to ${name} update`)
+  const text = chalk.hex('#32CD32')(` Welcome to ${name} update`)
   console.log(text)
 }
 

@@ -1,7 +1,7 @@
 const {
   getTmpBlog,
   getUserDir,
-  donwLastVersionTemplate,
+  downLastVersionTemplate,
   upgradeFiles,
 } = require('../utils/tools')
 
@@ -11,7 +11,7 @@ const entrance = (async () => {
   printf.welcome()
   const tempDir = await getTmpBlog()
   const userDir = await getUserDir()
-  await donwLastVersionTemplate(tempDir)
+  await downLastVersionTemplate(tempDir)
   await upgradeFiles(tempDir, userDir)
   console.log(printf.cyanColor('>Upgrade completed.'))
   process.exit(0)
