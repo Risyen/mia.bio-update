@@ -46,7 +46,7 @@ const downLastVersionTemplate = async (target) => {
 
 const hash = (buf) => createHash('sha1').update(buf).digest('hex')
 
-const ignores = ['node_modules', '.git', 'public', 'scripts']
+const ignores = ['node_modules', '.git', 'public']
 
 const collect = (currentPath) => {
   const files = fs.readdirSync(currentPath)
@@ -75,6 +75,7 @@ const igonreUpdateFiles = ['blog.config.js', 'LICENSE', 'favicon.ico']
 
 const upgradeFiles = async (tempDir, userDir) => {
   const files = collect(tempDir)
+  // console.log(files)
   await Promise.all(
     files.map(async (item) => {
       if (item.name.endsWith('md') || item.name.endsWith('mdx')) return
@@ -99,7 +100,7 @@ const upgradeFiles = async (tempDir, userDir) => {
     devDependencies: pkgJson.devDependencies,
     scripts: pkgJson.scripts,
   }
-  console.log(lastVersionPkg)
+  // console.log(lastVersionPkg.version)
   await fs.writeJSON(path.join(userDir, 'package.json'), lastVersionPkg, {
     spaces: 2,
   })
