@@ -3,7 +3,6 @@ const path = require('path')
 const fs = require('fs-extra')
 const { createHash } = require('crypto')
 const gitClone = require('git-clone')
-
 const spinner = require('./spinner')
 
 const getTmpBlog = async () => {
